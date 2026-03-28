@@ -3,7 +3,8 @@ import { test, expect } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 
-test.only('test3 form demoQA2', async ({ page }) => {
+//test.only('test3 form demoQA2', async ({ page }) => {
+test('test3 form demoQA2', async ({ page }) => {
   // aumentar timeout máximo a 60 segundos
   test.setTimeout(60000);
 
