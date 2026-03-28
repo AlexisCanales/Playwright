@@ -41,7 +41,7 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'],
-        headless: false, //nuevo codigo para abrir el navegador en modo normal
+        headless: true, //nuevo codigo para abrir el navegador en modo normal, lo dejamos en true para que funcione en github actions
           launchOptions: { //nuevo
             slowMo: 1000,    // ralentiza acciones (1s entre pasos)
           },
