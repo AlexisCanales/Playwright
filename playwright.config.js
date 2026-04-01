@@ -40,24 +40,25 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'],
-        headless: true, //nuevo codigo para abrir el navegador en modo normal, lo dejamos en true para que funcione en github actions
-          launchOptions: { //nuevo
-            slowMo: 1000,    // ralentiza acciones (1s entre pasos)
-          },
-       },
+      use: {
+        ...devices['Desktop Chrome'], //headless false = abrir navegador 
+        headless: false, //nuevo codigo para abrir el navegador en modo normal, lo dejamos en true para que funcione en github actions
+        launchOptions: { //nuevo
+          slowMo: 1000,    // ralentiza acciones (1s entre pasos)
+        },
+      },
     },
-/*
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-*/
+    /*
+        {
+          name: 'firefox',
+          use: { ...devices['Desktop Firefox'] },
+        },
+    
+        {
+          name: 'webkit',
+          use: { ...devices['Desktop Safari'] },
+        },
+    */
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
