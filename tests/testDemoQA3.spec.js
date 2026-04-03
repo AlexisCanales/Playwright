@@ -45,18 +45,33 @@ async function takeScreenshot(page, baseName) {
 
 // --- Test Slider ---
 test('test slider demoQA', async ({ page }) => {
+  // Aumentar timeout para entornos lentos como CI
   test.setTimeout(60000);
 
   await page.goto('https://demoqa.com/slider');
-  await page.setViewportSize({ width: 1280, height: 720 });
 
-  const slider = page.locator('input[type="range"]');
+  // 1. Localizar el slider
+  const slider = page.locator('input.range-slider'); // Selector más específico para DemoQA
+
+  // 2. Accion: Llenar el valor
   await slider.fill('80');
-  const newValue = await slider.getAttribute('value');
-  expect(newValue).toBe('80');
 
+  // 3. VALIDACIÓN ROBUSTA (Web-First Assertion)
+  // En lugar de getAttribute + expect manual, usamos toHaveValue.
+  // Esto reintentará automáticamente si el valor no cambia al instante.
+  await expect(slider).toHaveValue('80');
+
+  // Opcional: Validar que el cuadro de texto al lado también cambió a 80
+  const sliderValueInput = page.locator('#sliderValue');
+  await expect(sliderValueInput).toHaveValue('80');
+
+  // 4. Captura y espera
   await takeScreenshot(page, 'slider');
-  await page.waitForTimeout(2000);
+
+  // Nota: El waitForTimeout es útil para ver el resultado en local, 
+  // pero en GitHub Actions solo hace que el test sea más lento. 
+  // Podrías quitarlo o dejarlo bajo (500ms).
+  await page.waitForTimeout(1000);
 });
 
 
