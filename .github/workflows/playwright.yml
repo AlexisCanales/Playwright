@@ -1,3 +1,4 @@
+name: Playwright Tests
 on:
   push:
     branches: [ main, master ]
@@ -7,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       test_file:
-        description: 'Nombre del archivo de test (vacío para todos)'
+        description: 'Nombre del archivo de test (ej: tests/testDemoQA3.spec.js)'
         required: false
         default: ''
       grep_filter:
@@ -15,23 +16,32 @@ on:
         required: false
         default: ''
 
+# Forzamos el uso de Node 24 para evitar los mensajes de "deprecated"
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
       with:
-        node-version: lts/*
+        # Cambiado a 24 para cumplir con las nuevas políticas de GitHub
+        node-version: '24'
+        
     - name: Install dependencies
       run: npm ci
+      
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
       
     - name: Run Playwright tests
-      # Usamos las variables que el usuario escribe en el botón
-      run: npx playwright test ${{ github.event.inputs.test_file }} --grep "${{ github.event.inputs.grep_filter }}"
+      # IMPORTANTE: Agregamos --project=chromium-hidden para que GitHub no intente abrir la ventana
+      run: npx playwright test ${{ github.event.inputs.test_file }} --grep "${{ github.event.inputs.grep_filter }}" --project=chromium-hidden
       
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}

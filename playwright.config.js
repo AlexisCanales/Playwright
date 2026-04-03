@@ -39,13 +39,22 @@ export default defineConfig({
   // si no se quiere probar en Safari, se puede comentar el bloque de código correspondiente a Safari
   projects: [
     {
-      name: 'chromium',
+      name: 'chromium-visible', // PROYECTO PARA LOCAL
       use: {
         ...devices['Desktop Chrome'], //headless false = abrir navegador 
-        headless: false, //nuevo codigo para abrir el navegador en modo normal, lo dejamos en true para que funcione en github actions
+        headless: false, //nuevo codigo para abrir el navegador en modo normal
+        viewport: null,  // Agregado para permitir maximizado real
         launchOptions: { //nuevo
           slowMo: 1000,    // ralentiza acciones (1s entre pasos)
+          args: ['--start-maximized'], // Agregado para iniciar maximizado
         },
+      },
+    },
+    {
+      name: 'chromium-hidden', // PROYECTO PARA GITHUB ACTIONS
+      use: {
+        ...devices['Desktop Chrome'],
+        headless: true, // Se deja en true para que funcione en github actions
       },
     },
     /*
@@ -87,4 +96,3 @@ export default defineConfig({
   //   reuseExistingServer: !process.env.CI,
   // },
 });
-
