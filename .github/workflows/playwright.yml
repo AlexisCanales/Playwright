@@ -5,16 +5,38 @@ on:
   pull_request:
     branches: [ main, master ]
   
+    # Agrega los textbox en GitHub Actions para ejecutar manualmente
   workflow_dispatch:
     inputs:
+      #para textbox de busqueda de test
+      #test_file:
+        #description: 'Nombre del archivo de test (ej: tests/testDemoQA3.spec.js)'
+        #required: false
+        #default: ''
+      #grep_filter:
+        #description: 'Filtrar por nombre de test (grep)'
+        #required: false
+        #default: ''
+
+      #para combobox de seleccion de test
       test_file:
-        description: 'Nombre del archivo de test (ej: tests/testDemoQA3.spec.js)'
-        required: false
-        default: ''
+        description: 'Selecciona el archivo de test a ejecutar'
+        required: true
+        type: choice
+        options:
+          - all
+          - tests/testDemoQA3.spec.js
+          - tests/combobox.spec.js
+          - tests/slider.spec.js
+        default: all
       grep_filter:
         description: 'Filtrar por nombre de test (grep)'
         required: false
         default: ''
+ 
+
+
+
 
 # Forzamos el uso de Node 24 para evitar los mensajes de "deprecated"
 env:
