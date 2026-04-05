@@ -65,9 +65,18 @@ jobs:
       # IMPORTANTE: Agregamos --project=chromium-hidden para que GitHub no intente abrir la ventana
       run: npx playwright test ${{ github.event.inputs.test_file }} --grep "${{ github.event.inputs.grep_filter }}" --project=chromium-hidden
       
+    # Bloque adicional para subir reportes de Playwright a github actions
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
         path: playwright-report/
+        retention-days: 30
+    
+    # Bloque adicional para subir los screenshots a github actions
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: screenshots
+        path: screenshots/
         retention-days: 30
